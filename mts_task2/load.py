@@ -67,8 +67,6 @@ def chunk(it, n):
 		yield xs
 
 
-# word_costs = parse_afinn_file("AFINN-111.txt")
-
 db = SqliteExtDatabase("mts_task2.db")
 
 
@@ -85,11 +83,13 @@ class Tweet(BaseModel):
 	lang = CharField()
 	created_at = DateTimeField()
 	location = CharField()
+	tweet_sentiment = IntegerField(default = 0)
 
 	class Meta:
 		primary_key = False
 
 
+"""
 db.connect()
 db.drop_table(Tweet, fail_silently = True)
 db.create_table(Tweet, safe = True)
@@ -98,8 +98,20 @@ items = parse_tweets_file("three_minutes_tweets.json.txt")
 with db.atomic():
 	for i in chunk(items, 100):
 		Tweet.insert_many(i).execute()
-db.close()
 
-"""for i in items:
-	tv = get_tweet_value(i["tweet_text"], word_costs)
-	tmp = 2"""
+db.close()
+"""
+
+word_costs = parse_afinn_file("AFINN-111.txt")
+
+db.connect()
+
+all_tweets = Tweet.select()
+for tweet in all_tweets:
+	tweet_sentiment = get_tweet_value(tweet.tweet_text, word_costs)
+	if tweet_sentiment != 0 and tweet_sentiment != tweet.tweet_sentiment:
+		query = Tweet.update(tweet_sentiment = tweet_sentiment)
+		query.execute()
+	# tweet.save()
+db.commit()
+db.close()
