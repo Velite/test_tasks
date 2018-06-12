@@ -13,6 +13,13 @@
 
 **Задание:** необходимо написать SQL запрос, который должен вывести уникальные строки для поля ID с максимальной датой или с максимальной value, если даты одинаковые.
 
+---
+
+#### Решение:
+
 ```sql
-select * from test
+select id, max(value) as mv, max(date) as md 
+from task1
+group by id
+order by id
 ```
