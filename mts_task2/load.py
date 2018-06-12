@@ -77,7 +77,7 @@ class BaseModel(Model):
 		database = db
 
 
-class Tweets(BaseModel):
+class Tweet(BaseModel):
 	name = CharField()
 	tweet_text = TextField()
 	country_code = CharField()
@@ -91,13 +91,13 @@ class Tweets(BaseModel):
 
 
 db.connect()
-db.drop_table(Tweets, fail_silently = True)
-db.create_table(Tweets, safe = True)
+db.drop_table(Tweet, fail_silently = True)
+db.create_table(Tweet, safe = True)
 
 items = parse_tweets_file("three_minutes_tweets.json.txt")
 with db.atomic():
 	for i in chunk(items, 100):
-		Tweets.insert_many(i).execute()
+		Tweet.insert_many(i).execute()
 db.close()
 
 """for i in items:
