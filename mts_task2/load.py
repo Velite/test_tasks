@@ -89,7 +89,6 @@ class Tweet(BaseModel):
 		primary_key = False
 
 
-"""
 db.connect()
 db.drop_table(Tweet, fail_silently = True)
 db.create_table(Tweet, safe = True)
@@ -100,7 +99,6 @@ with db.atomic():
 		Tweet.insert_many(i).execute()
 
 db.close()
-"""
 
 word_costs = parse_afinn_file("AFINN-111.txt")
 
@@ -111,7 +109,7 @@ for tweet in all_tweets:
 	tweet_sentiment = get_tweet_value(tweet.tweet_text, word_costs)
 	if tweet_sentiment != 0 and tweet_sentiment != tweet.tweet_sentiment:
 		query = Tweet.update(tweet_sentiment = tweet_sentiment)
-		query.execute()
-	# tweet.save()
+		# query.execute()
+		# tweet.save()
 db.commit()
 db.close()
