@@ -103,5 +103,4 @@ for tweet in all_tweets:
 		query = Tweet.update(tweet_sentiment = tweet_sentiment)
 		# query.execute()
 		# tweet.save()
-db.commit()
 db.close()
