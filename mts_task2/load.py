@@ -1,4 +1,3 @@
-from itertools import islice, chain
 import json
 import csv
 
@@ -46,13 +45,6 @@ def get_tweet_value(text, costs):
 			if w in costs.keys():
 				result += costs.get(w, 0)
 	return result
-
-
-def batch(iterable, size):
-	sourceiter = iter(iterable)
-	while True:
-		batchiter = islice(sourceiter, size)
-		yield chain([batchiter.next()], batchiter)
 
 
 def chunk(it, n):
@@ -107,7 +99,7 @@ db.connect()
 all_tweets = Tweet.select()
 for tweet in all_tweets:
 	tweet_sentiment = get_tweet_value(tweet.tweet_text, word_costs)
-	if tweet_sentiment != 0 and tweet_sentiment != tweet.tweet_sentiment:
+	if tweet_sentiment != 0:
 		query = Tweet.update(tweet_sentiment = tweet_sentiment)
 		# query.execute()
 		# tweet.save()
