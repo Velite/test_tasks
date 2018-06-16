@@ -82,8 +82,7 @@ class Tweet(BaseModel):
 
 
 db.connect()
-db.drop_table(Tweet, fail_silently = True)
-db.create_table(Tweet, safe = True)
+db.create_tables([Tweet])
 
 items = parse_tweets_file("three_minutes_tweets.json.txt")
 with db.atomic():
