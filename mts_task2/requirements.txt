@@ -1,0 +1,4 @@
+peewee==3.5.0
+pep8==1.7.1
+pylint==1.9.2
+virtualenv==15.1.0

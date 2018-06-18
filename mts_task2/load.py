@@ -81,18 +81,22 @@ class Tweet(BaseModel):
 		primary_key = False
 
 
+word_costs = parse_afinn_file("AFINN-111.txt")
+
 db.connect()
 db.create_tables([Tweet])
 
 items = parse_tweets_file("three_minutes_tweets.json.txt")
 with db.atomic():
 	for i in chunk(items, 100):
+		sentiments = [t for t in i if t.get("lang") == "en"]
+		for s in sentiments:
+			s.update(tweet_sentiment = get_tweet_value(s.get("tweet_text"), word_costs))
 		Tweet.insert_many(i).execute()
 
 db.close()
 
-word_costs = parse_afinn_file("AFINN-111.txt")
-
+"""
 db.connect()
 
 all_tweets = Tweet.select()
@@ -103,3 +107,4 @@ for tweet in all_tweets:
 		# query.execute()
 		# tweet.save()
 db.close()
+"""
